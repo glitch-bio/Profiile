@@ -1,0 +1,9 @@
+{
+  "vishal": {
+    "name": "Vishal Mishra",
+    "bio": "Developer",
+    "avatar": "https://cdn.discordapp.com/avatars/1409520340136099904/...",
+    "bg_video": "https://zsdtlcyzhcfgcwqucdjd.supabase.co/storage/v1/object/public/Mods/Madara%20X%20Obito.mp4",
+    "custom_css": "body { background: #000; color: #fff; }"
+  }
+}
