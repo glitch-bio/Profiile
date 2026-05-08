@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style id="custom-styles"></style>
+</head>
+<body>
+    <div id="profile-content"></div>
+    <script>
+        // Get the username from the URL (e.g., glitch.bio/v1shal)
+        const username = window.location.pathname.split('/')[1] || 'vishal';
+
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                const user = data[username];
+                document.getElementById('custom-styles').innerHTML = user.custom_css;
+                document.getElementById('profile-content').innerHTML = `
+                    <h1>${user.name}</h1>
+                    <video src="${user.bg_video}" autoplay loop muted></video>
+                `;
+            });
+    </script>
+</body>
+</html>
