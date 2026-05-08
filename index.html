@@ -6,19 +6,36 @@
 <body>
     <div id="profile-content"></div>
     <script>
-        // Get the username from the URL (e.g., glitch.bio/v1shal)
-        const username = window.location.pathname.split('/')[1] || 'vishal';
+    // 1. Get the 'user' from the URL (e.g., ?user=vishal)
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('user') || 'vishal'; // Defaults to vishal if nothing is provided
 
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => {
-                const user = data[username];
-                document.getElementById('custom-styles').innerHTML = user.custom_css;
-                document.getElementById('profile-content').innerHTML = `
+    fetch('data.json')
+        .then(res => res.json())
+        .then(data => {
+            const user = data[username];
+            
+            // ERROR CHECK: If user isn't in data.json, stop here
+            if (!user) {
+                document.body.innerHTML = "<h1>User not found</h1>";
+                return;
+            }
+
+            // Apply CSS
+            document.getElementById('custom-styles').innerHTML = user.custom_css;
+            
+            // Build the page
+            document.getElementById('profile-content').innerHTML = `
+                <video id="bg-video" autoplay loop muted playsinline>
+                    <source src="${user.bg_video}" type="video/mp4">
+                </video>
+                <div class="card">
                     <h1>${user.name}</h1>
-                    <video src="${user.bg_video}" autoplay loop muted></video>
-                `;
-            });
-    </script>
+                    <p>${user.bio}</p>
+                </div>
+            `;
+        })
+        .catch(err => console.error("Error loading profile:", err));
+</script>
 </body>
 </html>
