@@ -1,41 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style id="custom-styles"></style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0a0a; --card: #151515; --accent: #00f2ff; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; }
+        
+        /* Sidebar */
+        aside { width: 250px; height: 100vh; background: var(--card); border-right: 1px solid #222; padding: 20px; }
+        .logo { font-weight: bold; font-size: 20px; margin-bottom: 40px; color: var(--accent); }
+        .nav-item { padding: 15px; cursor: pointer; color: #888; border-radius: 8px; transition: 0.3s; }
+        .nav-item:hover { background: #222; color: #fff; }
+
+        /* Main Content */
+        main { flex: 1; padding: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .box { background: var(--card); border: 1px solid #222; padding: 20px; border-radius: 12px; }
+        input { background: #000; border: 1px solid #333; color: white; padding: 10px; width: 100%; border-radius: 6px; margin-top: 10px; }
+        button { background: var(--accent); color: #000; border: none; padding: 10px 20px; border-radius: 6px; margin-top: 15px; font-weight: bold; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <div id="profile-content"></div>
-    <script>
-    // 1. Get the 'user' from the URL (e.g., ?user=vishal)
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('user') || 'vishal'; // Defaults to vishal if nothing is provided
 
-    fetch('data.json')
-        .then(res => res.json())
-        .then(data => {
-            const user = data[username];
-            
-            // ERROR CHECK: If user isn't in data.json, stop here
-            if (!user) {
-                document.body.innerHTML = "<h1>User not found</h1>";
-                return;
-            }
+<aside>
+    <div class="logo">GLITCH.BIO</div>
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Customize</div>
+    <div class="nav-item">Analytics</div>
+</aside>
 
-            // Apply CSS
-            document.getElementById('custom-styles').innerHTML = user.custom_css;
-            
-            // Build the page
-            document.getElementById('profile-content').innerHTML = `
-                <video id="bg-video" autoplay loop muted playsinline>
-                    <source src="${user.bg_video}" type="video/mp4">
-                </video>
-                <div class="card">
-                    <h1>${user.name}</h1>
-                    <p>${user.bio}</p>
-                </div>
-            `;
-        })
-        .catch(err => console.error("Error loading profile:", err));
+<main>
+    <h1>Account Overview</h1>
+    <div class="grid">
+        <div class="box">
+            <h3>Profile Settings</h3>
+            <label>Username</label>
+            <input type="text" id="username" placeholder="v1shal">
+            <label>Bio</label>
+            <input type="text" id="bio" placeholder="Digital Shadow">
+            <button onclick="saveProfile()">Save Changes</button>
+        </div>
+        <div class="box">
+            <h3>Media</h3>
+            <label>Background Video URL</label>
+            <input type="text" id="videoUrl" placeholder="https://...">
+        </div>
+    </div>
+</main>
+
+<script>
+    function saveProfile() {
+        const profile = {
+            username: document.getElementById('username').value,
+            bio: document.getElementById('bio').value,
+            bg_video: document.getElementById('videoUrl').value
+        };
+        console.log("Saving to JSON...", profile);
+        alert("Settings Saved! (Connect to GitHub API to auto-commit)");
+    }
 </script>
 </body>
 </html>
